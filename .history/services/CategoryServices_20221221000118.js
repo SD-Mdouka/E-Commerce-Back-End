@@ -50,11 +50,11 @@ exports.craeteCategory = expressAsyncHandler(async (req, res) => {
 // @route PUT /api/v1/categories
 // @access Private
 exports.updateCategory = expressAsyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.parames;
   const { name } = req.body;
   const category = await CategoryModel.findOneAndUpdate(
     { _id: id },
-    { name, slug: slugify(name) },
+    { name },
     { new: true }
   );
   if (!category) {

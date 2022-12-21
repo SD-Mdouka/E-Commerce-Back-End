@@ -3,12 +3,11 @@ const {
   getCategory,
   craeteCategory,
   getCategories,
-  updateCategory,
 } = require("../services/CategoryServices");
 
 const router = express.Router();
 
 router.route("/").get(getCategories).post(craeteCategory);
-router.route("/:id").get(getCategory).put(updateCategory);
+router.route("/:id").get(getCategory);
 
 module.exports = router;

@@ -7,7 +7,7 @@ const expressAsyncHandler = require("express-async-handler");
 // @route GET /api/v1/categories
 // @access Public
 
-exports.getCategories = expressAsyncHandler(async (req, res) => {
+exports.getCategory = expressAsyncHandler(async (req, res) => {
   const page = req.query.page * 1 || 2;
   const limit = req.query.limit * 1 || 5;
   const skip = (page - 1) * limit;
@@ -44,24 +44,3 @@ exports.craeteCategory = expressAsyncHandler(async (req, res) => {
   res.status(201).json({ data: category });
 });
 /***************End**Create*************** */
-
-/***************Start**Update Category*************** */
-// @description function to update categories
-// @route PUT /api/v1/categories
-// @access Private
-exports.updateCategory = expressAsyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { name } = req.body;
-  const category = await CategoryModel.findOneAndUpdate(
-    { _id: id },
-    { name, slug: slugify(name) },
-    { new: true }
-  );
-  if (!category) {
-    res.status(404).json({
-      msg: `No category for this id ${id}`,
-    });
-  }
-  res.status(201).json({ data: category });
-});
-/***************End**Update Category*************** */
