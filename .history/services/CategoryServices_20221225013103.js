@@ -51,7 +51,7 @@ exports.craeteCategory = expressAsyncHandler(async (req, res) => {
 // @description function to update categories
 // @route PUT /api/v1/categories
 // @access Private
-exports.updateCategory = expressAsyncHandler(async (req, res, next) => {
+exports.updateCategory = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
   const category = await CategoryModel.findOneAndUpdate(
@@ -69,7 +69,7 @@ exports.updateCategory = expressAsyncHandler(async (req, res, next) => {
 // @description function specific to Delete categories
 // @route DELETE /api/v1/categories
 // @access Private
-exports.deleteCategory = expressAsyncHandler(async (res, req, next) => {
+exports.deleteCategory = expressAsyncHandler(async (res, req) => {
   const { id } = req.params;
   const category = await CategoryModel.findByIdAndDelete(id);
 

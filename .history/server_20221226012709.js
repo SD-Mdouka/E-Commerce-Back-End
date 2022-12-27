@@ -34,22 +34,17 @@ app.use(globalError);
 
 const port = process.env.PORT;
 
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.log(`app api with port ${port}`);
   console.log("====================================");
 });
 
-//Catch error in event data base
+//Catch error in data base
 
 process.on("unhandledRejection", (err) => {
   console.log("====================================");
   console.error(
-    `Error of unhandledRejection in connection to handler Errors => ${err.name} | ${err.message}`
+    `Error of unhandledRejection in connection to database Erro => ${err}`
   );
-  // handler rejection outside express
-  server.close(() => {
-    console.log("====================================");
-    console.error(`Shutting down ...`);
-    process.exit(1);
-  });
+  console.log("====================================");
 });

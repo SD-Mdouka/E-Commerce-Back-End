@@ -28,7 +28,8 @@ exports.getCategory = expressAsyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const category = await CategoryModel.findById(id);
   if (!category) {
-    return next(new ApiError(`No category for this id ${id}`), 404);
+    next(new ApiError(`No category for this id ${id}`), 404);
+    // res.status(404).json({ msg:  });
   }
   res.status(200).json({ data: category });
 });
@@ -51,7 +52,7 @@ exports.craeteCategory = expressAsyncHandler(async (req, res) => {
 // @description function to update categories
 // @route PUT /api/v1/categories
 // @access Private
-exports.updateCategory = expressAsyncHandler(async (req, res, next) => {
+exports.updateCategory = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
   const category = await CategoryModel.findOneAndUpdate(
@@ -60,7 +61,9 @@ exports.updateCategory = expressAsyncHandler(async (req, res, next) => {
     { new: true }
   );
   if (!category) {
-    return next(new ApiError(`No category for this id ${id}`), 404);
+    res.status(404).json({
+      msg: `No category for this id ${id}`,
+    });
   }
   res.status(201).json({ data: category });
 });
@@ -69,12 +72,14 @@ exports.updateCategory = expressAsyncHandler(async (req, res, next) => {
 // @description function specific to Delete categories
 // @route DELETE /api/v1/categories
 // @access Private
-exports.deleteCategory = expressAsyncHandler(async (res, req, next) => {
+exports.deleteCategory = expressAsyncHandler(async (res, req) => {
   const { id } = req.params;
   const category = await CategoryModel.findByIdAndDelete(id);
 
   if (!category) {
-    return next(new ApiError(`No category for this id ${id}`), 404);
+    req.status(404).json({
+      msg: `No category for this id ${id}`,
+    });
   }
   res.status(204).send();
 });

@@ -46,7 +46,6 @@ process.on("unhandledRejection", (err) => {
   console.error(
     `Error of unhandledRejection in connection to handler Errors => ${err.name} | ${err.message}`
   );
-  // handler rejection outside express
   server.close(() => {
     console.log("====================================");
     console.error(`Shutting down ...`);

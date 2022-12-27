@@ -6,7 +6,6 @@ const app = express();
 const dbConnection = require("./config/database");
 const CategoryRoutes = require("./routes/CategoryRoute");
 const ApiError = require("./utils/apiError");
-const globalError = require("./middelweare/ErrorMiddelWeare");
 
 // Configiration of variable
 dotenv.config({ path: "config.env" });
@@ -15,9 +14,9 @@ dbConnection();
 
 //Middle test body request
 app.use(express.json());
-if (process.env.MODE_ENV === "development") {
+if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
-  console.log(`Use Mode is : ${process.env.MODE_ENV}`);
+  console.log(`Use Mode is : ${process.env.NODE_ENV}`);
 }
 
 //Mount Routes
@@ -30,26 +29,13 @@ app.all("*", (req, res, next) => {
 });
 
 //Globale Error handling middlewere
-app.use(globalError);
+app.use((err, req, res, next) => {
+  res.status(400).json({ err });
+});
 
 const port = process.env.PORT;
 
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.log(`app api with port ${port}`);
   console.log("====================================");
-});
-
-//Catch error in event data base
-
-process.on("unhandledRejection", (err) => {
-  console.log("====================================");
-  console.error(
-    `Error of unhandledRejection in connection to handler Errors => ${err.name} | ${err.message}`
-  );
-  // handler rejection outside express
-  server.close(() => {
-    console.log("====================================");
-    console.error(`Shutting down ...`);
-    process.exit(1);
-  });
 });
